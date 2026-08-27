@@ -40,7 +40,7 @@ loom {
 }
 
 tasks.named('processResources', ProcessResources).configure {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     inputs.properties rootProject.ext.modProperties
 
     filesMatching('fabric.mod.json') {

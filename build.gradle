@@ -48,12 +48,6 @@ subprojects {
         it.options.release = javaVer
     }
 
-    if (project.name != 'common') {
-        evaluationDependsOn(':common')
-        sourceSets.main.java.srcDirs += project(':common').sourceSets.main.java.srcDirs
-        sourceSets.main.resources.srcDirs += project(':common').sourceSets.main.resources.srcDirs
-    }
-
     tasks.processResources {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
     }
@@ -85,6 +79,12 @@ subprojects {
             compileOnly "v.akfz:DBuild:${project.dbuild_version}"
             annotationProcessor("v.akfz:DBuild:${project.dbuild_version}")
         }
+    }
+
+    if (project.name != 'common') {
+        evaluationDependsOn(':common')
+        sourceSets.main.java.srcDirs += project(':common').sourceSets.main.java.srcDirs
+        sourceSets.main.resources.srcDirs += project(':common').sourceSets.main.resources.srcDirs
     }
 
     tasks.withType(Jar).configureEach {
