@@ -42,11 +42,6 @@ minecraft {
         server {
             property 'mixin.config', "${project.mod_id}.mixins.json"
         }
-
-        data {
-            workingDirectory project.file('run-data')
-            args '--mod', "${project.mod_id}", '--all', '--output', file('src/generated/resources/'), '--existing'
-        }
     }
 }
 

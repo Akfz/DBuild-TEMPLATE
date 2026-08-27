@@ -57,6 +57,12 @@ subprojects {
         implementation.extendsFrom(embed)
     }
 
+    if (project.name != 'common') {
+        evaluationDependsOn(':common')
+        sourceSets.main.java.srcDirs += project(':common').sourceSets.main.java.srcDirs
+        sourceSets.main.resources.srcDirs += project(':common').sourceSets.main.resources.srcDirs
+    }
+
     repositories {
         if (project.hasProperty('aslib_version') && project.aslib_version) {
             maven {
@@ -79,12 +85,6 @@ subprojects {
             compileOnly "v.akfz:DBuild:${project.dbuild_version}"
             annotationProcessor("v.akfz:DBuild:${project.dbuild_version}")
         }
-    }
-
-    if (project.name != 'common') {
-        evaluationDependsOn(':common')
-        sourceSets.main.java.srcDirs += project(':common').sourceSets.main.java.srcDirs
-        sourceSets.main.resources.srcDirs += project(':common').sourceSets.main.resources.srcDirs
     }
 
     tasks.withType(Jar).configureEach {

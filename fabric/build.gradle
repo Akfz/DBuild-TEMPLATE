@@ -28,19 +28,10 @@ dependencies {
     def mixinExtrasVer = project.findProperty('mixinextras_version') ?: '0.4.1'
     compileOnly "io.github.llamalad7:mixinextras-common:${mixinExtrasVer}"
     annotationProcessor "io.github.llamalad7:mixinextras-common:${mixinExtrasVer}"
-}
-
-loom {
-    runs {
-        client {
-            client()
-            runDir "run"
-        }
-    }
+    annotationProcessor "org.spongepowered:mixin:${project.mixin_version}:processor"
 }
 
 tasks.named('processResources', ProcessResources).configure {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     inputs.properties rootProject.ext.modProperties
 
     filesMatching('fabric.mod.json') {
