@@ -51,10 +51,11 @@ dependencies {
 }
 
 tasks.named('processResources', ProcessResources).configure {
-    inputs.properties rootProject.ext.modProperties
+    def props = rootProject.ext.find('modProperties') ?: [:]
+    inputs.properties props
 
     filesMatching('fabric.mod.json') {
-        expand rootProject.ext.modProperties
+        expand props
     }
 }
 
@@ -66,25 +67,8 @@ tasks.named('javadoc', Javadoc).configure {
     }
 }
 
-jar {
+tasks.named('jar', Jar).configure {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from sourceSets.main.output
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifactId = "${project.archives_base_name}-common"
-            from components.java
-        }
-    }
-    repositories {
-        if (project.hasProperty('publishing-dir')) {
-            maven {
-                url = rootProject.file(project.property('publishing-dir'))
-            }
-        }
-    }
 }
 
 tasks.withType(JavaCompile).configureEach {
