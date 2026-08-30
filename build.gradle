@@ -161,29 +161,34 @@ tasks.register('compileAll') {
     description = 'Cleans libs and builds all active modules, aggregating output release & dev JARs'
     dependsOn 'cleanLibs'
 
-    dependsOn subprojects.findAll { it.name != 'common' }.collect { it.tasks.named('assemble') }
+    def loaderProjects = subprojects.findAll { it.name in ['fabric', 'forge', 'neoforge'] }
+    dependsOn loaderProjects.collect { it.tasks.named('assemble') }
+
+    dependsOn loaderProjects.findAll { it.name in ['forge', 'neoforge'] }.collect { it.tasks.named('devJar') }
+
+    def commonProj = findProject(':common')
+    if (commonProj != null) {
+        dependsOn commonProj.tasks.named('jar')
+    }
 
     doLast {
         def modDir = layout.buildDirectory.dir("libs/mod").get().asFile
         def devDir = layout.buildDirectory.dir("libs/dev").get().asFile
-
         modDir.mkdirs()
         devDir.mkdirs()
 
-        ['fabric', 'forge', 'neoforge'].each { platform ->
+        ['common', 'fabric', 'forge', 'neoforge'].each { platform ->
             def subProj = findProject(":${platform}")
-            if (subProj != null) {
-                def buildLibs = subProj.layout.buildDirectory.dir("libs").get().asFile
-                if (buildLibs.exists()) {
-                    buildLibs.listFiles()?.each { jarFile ->
-                        if (jarFile.name.endsWith(".jar")) {
-                            def targetDir = jarFile.name.contains("-dev") ? devDir : modDir
-                            copy {
-                                from jarFile
-                                into targetDir
-                            }
-                        }
-                    }
+            if (subProj == null) return
+            def buildLibs = subProj.layout.buildDirectory.dir("libs").get().asFile
+            if (!buildLibs.exists()) return
+
+            buildLibs.listFiles()?.each { jarFile ->
+                if (!jarFile.name.endsWith(".jar")) return
+                def targetDir = jarFile.name.contains("-dev") ? devDir : modDir
+                copy {
+                    from jarFile
+                    into targetDir
                 }
             }
         }
