@@ -13,7 +13,6 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-
     mappings loom.layered() {
         officialMojangMappings()
         def pMc = project.findProperty('parchment_mc_version') ?: project.minecraft_version
@@ -22,12 +21,25 @@ dependencies {
             parchment("org.parchmentmc.data:parchment-${pMc}:${pVer}@zip")
         }
     }
-
     modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
 
     def mixinExtrasVer = project.findProperty('mixinextras_version') ?: '0.4.1'
-    compileOnly "io.github.llamalad7:mixinextras-common:${mixinExtrasVer}"
+    modCompileOnly "io.github.llamalad7:mixinextras-common:${mixinExtrasVer}"
     annotationProcessor "io.github.llamalad7:mixinextras-common:${mixinExtrasVer}"
+}
+
+loom {
+    mixin {
+        useLegacyMixinAp = true
+        defaultRefmapName = "${project.findProperty('mixin_name') ?: project.mod_id}.refmap.json"
+    }
+
+    runs {
+        client {
+            client()
+            runDir "run"
+        }
+    }
 }
 
 tasks.named('processResources', ProcessResources).configure {
