@@ -32,7 +32,8 @@ oldcode/.idea/
 build/
 
 fabricRun/
-run/
+forgeRun/
+forgeRunServer/
 fabricRunServer/
 
 .gradle/
