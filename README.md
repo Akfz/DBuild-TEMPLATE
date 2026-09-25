@@ -1,0 +1,1 @@
+Template for [DBuild](https://github.com/Akfz/DBuild) and [DBuildGradle](https://github.com/Akfz/DBuildG)
