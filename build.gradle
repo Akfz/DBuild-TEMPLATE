@@ -185,8 +185,14 @@ dbuild {
                     }
 
                     def mixinConfigName = project.findProperty('mixinfile') ?: project.mod_id
-                    client { property 'mixin.config', "${mixinConfigName}.json" }
-                    server { property 'mixin.config', "${mixinConfigName}.json" }
+                    client {
+                        workingDirectory project.file('forgeRun')
+                        property 'mixin.config', "${mixinConfigName}.json"
+                    }
+                    server {
+                        workingDirectory project.file('forgeRunServer')
+                        property 'mixin.config', "${mixinConfigName}.json"
+                    }
                 }
             }
 
