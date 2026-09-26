@@ -133,7 +133,10 @@ dbuild {
             }
 
             tasks.named('remapJar').configure {
-                from { configurations.embed.collect { it.isDirectory() ? it : zipTree(it) } }
+                def embedConf = configurations.findByName('embed')
+                if (embedConf != null) {
+                    from { embedConf.collect { it.isDirectory() ? it : zipTree(it) } }
+                }
             }
 
             tasks.named('processResources', ProcessResources).configure {
