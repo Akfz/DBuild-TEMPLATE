@@ -63,6 +63,8 @@ dbuild {
     dbuildannotations() // turn on dbuild annotation logic (dont need to generate initializer)
 
     registryCommand 'runClient', 'fabric', 'forge' //registers wrappers for both loaders fabricRunClient and forgeRunClient
+    registryCommand 'runServer', 'fabric', 'forge'
+    registryCommand 'build', 'fabric', 'forge'
 
     fabric {
         devJar() // unobfuscated dev jar
@@ -160,7 +162,6 @@ dbuild {
     forge {
         devJar()
         obfJar()
-        registryCommand 'runClient', 'runServer', 'build'
 
         configure {
             apply plugin: 'net.minecraftforge.gradle'
