@@ -94,8 +94,8 @@ dbuild {
                 modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
 
                 if (project.hasProperty('aslib_version') && project.aslib_version) {
-                    def aslibDep = "v.akfz:aslib-forge:${project.aslib_version}"
-                    implementation aslibDep
+                    def aslibDep = "v.akfz:aslib-fabric:${project.aslib_version}"
+                    modImplementation aslibDep
                     annotationProcessor aslibDep
                 }
                 if (project.hasProperty('dbuild_version') && project.dbuild_version) {
